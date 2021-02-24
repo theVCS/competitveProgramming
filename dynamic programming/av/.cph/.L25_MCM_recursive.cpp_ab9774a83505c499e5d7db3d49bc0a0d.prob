@@ -1,0 +1,1 @@
+{"name":"Local: L25_MCM_recursive","url":"d:\\study material\\comp prog\\dynamic programming\\av\\L25_MCM_recursive.cpp","tests":[{"id":1610451185054,"input":"1\n5\n1 2 3 4 3","output":"30"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\dynamic programming\\av\\L25_MCM_recursive.cpp","group":"local","local":true}

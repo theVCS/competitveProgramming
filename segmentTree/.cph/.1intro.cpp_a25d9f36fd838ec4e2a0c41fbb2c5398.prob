@@ -1,0 +1,1 @@
+{"name":"Local: 1intro","url":"d:\\study material\\comp prog\\segmentTree\\1intro.cpp","tests":[{"id":1612277662813,"input":"10 3\n1 2 3 4 5 6 7 8 9 10\n1 2\n2 10\n6 9","output":"1\n2\n6"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\segmentTree\\1intro.cpp","group":"local","local":true}
