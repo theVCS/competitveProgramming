@@ -7,12 +7,25 @@ using namespace std;
 #define pii pair<int, int>
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
-#define maxN 1000001
+#define maxN 100001
+#define endl "\n"
 #define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+// while (T < q[i].t)
+//     do_update(++T);
+// while (T > q[i].t)
+//     undo(T--);
+// while (R < q[i].r)
+//     add(++R);
+// while (L > q[i].l)
+//     add(--L);
+// while (R > q[i].r)
+//     remove(R--);
+// while (L < q[i].l)
+//     remove(L++);
 
 vector<int> arr[maxN];
 bool vis[maxN], onStack[maxN];
@@ -22,44 +35,46 @@ stack<int> st;
 void dfs(int node)
 {
     vis[node] = true;
-    intime[node] = low[node] = ++timer;
     onStack[node] = true;
     st.push(node);
+    low[node] = intime[node] = ++timer;
 
     for (int child : arr[node])
     {
-        if (onStack[child] && vis[child])
+        if (vis[child] && onStack[child])
         {
             low[node] = min(low[node], intime[child]);
         }
-        else if (!vis[node])
+        else if (!vis[child])
         {
             dfs(child);
 
             if (onStack[child])
             {
-                low[node] = min(low[node], low[child]);
+                low[node] = min(low[node], intime[child]);
             }
         }
     }
 
-    if (intime[node] == low[node])
+    if (low[node] == intime[node])
     {
         while (true)
         {
-            int k = st.top();
+            int u = st.top();
+            onStack[u] = false;
             st.pop();
-            onStack[k] = false;
 
-            cout << k << " ";
+            cout << u << " ";
 
-            if (k == node)
-            {
+            if (u == node)
                 break;
-            }
         }
         cout << endl;
     }
+}
+
+void solve()
+{
 }
 
 int main(int argc, char const *argv[])
@@ -68,15 +83,23 @@ int main(int argc, char const *argv[])
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int n, m, a, b;
+    // ifstream fi("input.txt");
+    // ofstream fo("output.txt");
 
-    cin >> n >> m;
+    // fi >> input;
+    // fo << output;
 
-    REP(i, 0, m)
+    int t = 1;
+
+    //cin >> t;
+
+    while (t--)
     {
-        cin >> a >> b;
-        arr[a].push_back(b);
+        solve();
     }
+
+    //fi.close();
+    //fo.close();
 
     return 0;
 }

@@ -1,5 +1,3 @@
-// this algo helps us when we need to find the minimum, maximum, sum for a given range for n given number
-
 #include <bits/stdc++.h>
 //#include <boost/multiprecision/cpp_int.hpp>
 //using namespace boost::multiprecision;
@@ -9,62 +7,85 @@ using namespace std;
 #define pii pair<int, int>
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
-#define maxN 1000001
+#define maxN 100001
+#define INF 0x3f3f3f3f
+#define endl "\n"
+#define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+// while (T < q[i].t)
+//     do_update(++T);
+// while (T > q[i].t)
+//     undo(T--);
+// while (R < q[i].r)
+//     add(++R);
+// while (L > q[i].l)
+//     add(--L);
+// while (R > q[i].r)
+//     remove(R--);
+// while (L < q[i].l)
+//     remove(L++);
 
-int n, blk, arr[maxN], f[1000];
+const int blk = 900;
+int arr[maxN], f[120];
 
-void init()
+int query(int l, int r)
 {
+    int lblk = l / blk;
+    int rblk = r / blk;
+
     int res = INT_MAX;
 
-    for (int i = 0; i < n; i++)
+    if (lblk == rblk)
     {
-        if ((i + 1) % blk == 0)
-        {
-            f[i / blk] = res;
-            res = INT_MAX;
-        }
-        res = min(res, arr[i]);
-    }
-
-    f[n / blk] = res;
-}
-
-int sqDec(int l, int r)
-{
-    int res = INT_MAX;
-    int lb = l / blk;
-    int rb = r / blk;
-
-    if (lb == rb)
-    {
-        for (int i = l; i <= r; i++)
+        REP(i, l, r + 1)
         {
             res = min(res, arr[i]);
         }
     }
     else
     {
-        for (int i = l; i < (lb + 1) * blk; i++)
+        REP(i, 1, blk * (lblk + 1))
         {
             res = min(res, arr[i]);
         }
 
-        for (int i = lb + 1; i < rb; i++)
+        REP(i, lblk + 1, rblk)
         {
             res = min(res, f[i]);
         }
 
-        for (int i = rb * blk; i <= r; i++)
+        REP(i, rblk * blk, r + 1)
         {
             res = min(res, arr[i]);
         }
     }
+
     return res;
+}
+
+void solve()
+{
+    int n, q, a, b;
+
+    cin >> n >> q;
+
+    memset(f, INT_MAX, sizeof(f));
+
+    REP(i, 0, n)
+    {
+        cin >> arr[i];
+        f[i / blk] = min(arr[i], f[i / blk]);
+    }
+
+    while (q--)
+    {
+        cin >> a >> b;
+        a--, b--;
+        cout << query(a, b) << endl;
+    }
 }
 
 int main(int argc, char const *argv[])
@@ -73,23 +94,23 @@ int main(int argc, char const *argv[])
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int q, a, b;
+    // ifstream fi("input.txt");
+    // ofstream fo("output.txt");
 
-    cin >> n;
-    blk = sqrt(n);
+    // fi >> input;
+    // fo << output;
 
-    REP(i, 0, n)
-    cin >> arr[i];
+    int t = 1;
 
-    init();
+    //cin >> t;
 
-    cin >> q;
-
-    while (q--)
+    while (t--)
     {
-        cin >> a >> b;
-        cout << sqDec(a, b) << endl;
+        solve();
     }
+
+    //fi.close();
+    //fo.close();
 
     return 0;
 }

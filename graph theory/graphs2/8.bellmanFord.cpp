@@ -8,39 +8,68 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
 #define maxN 1000001
+#define INF 1e17
+#define endl "\n"
+#define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+// while (T < q[i].t)
+//     do_update(++T);
+// while (T > q[i].t)
+//     undo(T--);
+// while (R < q[i].r)
+//     add(++R);
+// while (L > q[i].l)
+//     add(--L);
+// while (R > q[i].r)
+//     remove(R--);
+// while (L < q[i].l)
+//     remove(L++);
 
 struct edge
 {
-    int a, b, c;
+    int u, v;
+    ll w;
 };
-edge e[maxN];
-vector<int> dist(maxN, INT_MAX);
 
-int n, m;
+vector<edge> arr;
+vector<ll> dis(maxN, INF);
+int parent[maxN];
+
+void bellmanFord(int m)
+{
+    while (true)
+    {
+        bool flag = true;
+
+        REP(i, 0, m)
+        {
+            if (dis[arr[i].u] < INF && dis[arr[i].v] > dis[arr[i].u] + arr[i].w)
+            {
+                dis[arr[i].v] = dis[arr[i].u] + arr[i].w;
+                parent[arr[i].v] = arr[i].u;
+                flag = false;
+            }
+        }
+
+        if (flag)
+            break;
+    }
+}
 
 void solve()
 {
-    bool flag;
+    int n, m;
+    edge e;
 
-    while (true)
+    cin >> n >> m;
+
+    REP(i, 0, m)
     {
-        flag = true;
-
-        for (int i = 0; i < m; i++)
-        {
-            if (dist[e[i].a] < INT_MAX)
-            {
-                if (dist[e[i].b] > dist[e[i].a] + e[i].c)
-                {
-                    flag = false;
-                    dist[e[i].b] = dist[e[i].a] + e[i].c;
-                }
-            }
-        }
+        cin >> e.u >> e.v >> e.w;
+        arr.push_back(e);
     }
 }
 
@@ -50,17 +79,23 @@ int main(int argc, char const *argv[])
     cin.tie(NULL);
     cout.tie(NULL);
 
-    cin >> n >> m;
+    // ifstream fi("input.txt");
+    // ofstream fo("output.txt");
 
-    REP(i, 0, m)
+    // fi >> input;
+    // fo << output;
+
+    int t = 1;
+
+    //cin >> t;
+
+    while (t--)
     {
-        cin >> e[i].a >> e[i].b >> e[i].c;
-
-        if (e[i].b == 1)
-        {
-            swap(e[i].a, e[i].b);
-        }
+        solve();
     }
+
+    //fi.close();
+    //fo.close();
 
     return 0;
 }

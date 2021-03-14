@@ -1,0 +1,18 @@
+1. can be applied on a sorted array
+
+2. on a monotonic function (non-decreasing function)
+
+INCREASING:
+                X1 > X2
+                F(X1) > F(X2)
+DECREASING:
+                X1 > X2
+                F(X1) < F(X2)
+NON-DECREASING:
+                X1 > X2
+                F(X1) >= F(X2)
+NON-INCREASING:
+                X1 > X2
+                F(X1) <= F(X2)
+
+

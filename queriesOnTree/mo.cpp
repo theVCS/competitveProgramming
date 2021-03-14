@@ -8,47 +8,89 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
 #define maxN 100001
+#define INF 0x3f3f3f3f
+#define endl "\n"
+#define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+// while (T < q[i].t)
+//     do_update(++T);
+// while (T > q[i].t)
+//     undo(T--);
+// while (R < q[i].r)
+//     add(++R);
+// while (L > q[i].l)
+//     add(--L);
+// while (R > q[i].r)
+//     remove(R--);
+// while (L < q[i].l)
+//     remove(L++);
 
-const int blk = 555;
-int n, q, fre[1000001], cnt, arr[30000], ML, MR, res[200000];
+int arr[maxN], fre[1000001], res, ans[maxN];
+const int blk = 900;
 
 struct query
 {
-    int l, r, i;
-};
-query Q[200000];
-
-void add(int index)
-{
-    if (fre[arr[index]] == 0)
-    {
-        cnt++;
-    }
-
-    fre[arr[index]]++;
-}
+    int l, r, index, lblk;
+} Q[maxN];
 
 bool cmp(query a, query b)
 {
-    if (a.l / blk != b.l / blk)
-    {
-        return (a.l / blk) < (b.l / blk);
-    }
-    return (a.r < b.r);
+    return (a.lblk < b.lblk) || (a.lblk == b.lblk && a.r < b.r);
+}
+
+void add(int index)
+{
+    int ele = arr[index];
+
+    if (++fre[ele] == 1)
+        res++;
 }
 
 void remove(int index)
 {
-    fre[arr[index]]--;
+    int ele = arr[index];
 
-    if (fre[arr[index]] == 0)
+    if (--fre[ele] == 0)
+        res--;
+}
+
+void solve()
+{
+    int n, q;
+
+    cin >> n >> q;
+
+    REP(i, 1, n + 1)
+    cin >> arr[i];
+
+    REP(i, 0, q)
     {
-        cnt--;
+        cin >> Q[i].l >> Q[i].r;
+        Q[i].index = i;
+        Q[i].lblk = Q[i].l / blk;
     }
+
+    sort(Q, Q + q, cmp);
+
+    for (int i = 0, L = 1, R = 0; i < q; i++)
+    {
+        while (R < Q[i].r)
+            add(++R);
+        while (L > Q[i].l)
+            add(--L);
+        while (R > Q[i].r)
+            remove(R--);
+        while (L < Q[i].l)
+            remove(L++);
+
+        ans[Q[i].index] = res;
+    }
+
+    REP(i, 0, q)
+    cout << ans[i] << endl;
 }
 
 int main(int argc, char const *argv[])
@@ -57,56 +99,23 @@ int main(int argc, char const *argv[])
     cin.tie(NULL);
     cout.tie(NULL);
 
-    cin >> n;
+    // ifstream fi("input.txt");
+    // ofstream fo("output.txt");
 
-    REP(i, 0, n)
-    cin >> arr[i];
+    // fi >> input;
+    // fo << output;
 
-    cin >> q;
+    int t = 1;
 
-    REP(i, 0, q)
+    //cin >> t;
+
+    while (t--)
     {
-        cin >> Q[i].l >> Q[i].r;
-        Q[i].i = i, Q[i].l--, Q[i].r--;
+        solve();
     }
 
-    sort(Q, Q + q, cmp);
-
-    ML = 0, MR = -1;
-    REP(i, 0, q)
-    {
-        int L = Q[i].l;
-        int R = Q[i].r;
-
-        while (L < ML)
-        {
-            ML--;
-            add(ML);
-        }
-
-        while (L > ML)
-        {
-            remove(ML);
-            ML++;
-        }
-
-        while (R < MR)
-        {
-            remove(MR);
-            MR--;
-        }
-
-        while (R > MR)
-        {
-            MR++;
-            add(MR);
-        }
-
-        res[Q[i].i] = cnt;
-    }
-
-    REP(i, 0, q)
-    cout << res[i] << endl;
+    //fi.close();
+    //fo.close();
 
     return 0;
 }

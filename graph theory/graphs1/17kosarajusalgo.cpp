@@ -51,7 +51,7 @@ int main(int argc, char const *argv[])
     cin >> t;
 
     while (t--)
-    {     
+    {
         for (int i = 0; i < maxN; i++)
         {
             arr[i].clear();
@@ -81,19 +81,19 @@ int main(int argc, char const *argv[])
 
         for (int i = n - 1; i > -1; i--)
         {
-            SS.clear();
 
             if (!vis[order[i]])
             {
+                SS.clear();
+
                 dfs1(order[i]);
-            }
 
-            for(int child: SS)
-            {
-                cout<<child<<" ";
+                for (int child : SS)
+                {
+                    cout << child << " ";
+                }
+                cout << endl;
             }
-
-            cout<<endl;
         }
     }
 
