@@ -1,0 +1,1 @@
+{"name":"Local: minPathOndgrid","url":"d:\\study material\\comp prog\\dynamic programming\\cnc\\minPathOndgrid.cpp","tests":[{"id":1616493151984,"input":"3 4\n5 1 2 6\n9 9 7 5\n3 1 4 6","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\dynamic programming\\cnc\\minPathOndgrid.cpp","group":"local","local":true}

@@ -7,7 +7,7 @@ using namespace std;
 #define pii pair<int, int>
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
-#define maxN 100001
+#define maxN 1000001
 #define INF 1000000000
 #define endl "\n"
 #define all(x) (x).begin(), (x).end()
@@ -28,34 +28,60 @@ using namespace std;
 // while (L < q[i].l)
 //     remove(L++);
 
-int arr[maxN];
+ll arr[maxN];
+ll preSum[maxN];
+ll ft[maxN];
+
+void update(int index, ll val)
+{
+    while (index < maxN)
+    {
+        ft[index] += val;
+        index += (index & -1 * index);
+    }
+}
+
+ll query(int index)
+{
+    ll sum = 0;
+
+    while (index)
+    {
+        sum += ft[index];
+        index -= (index & -1 * index);
+    }
+
+    return sum;
+}
 
 void solve()
 {
-    int n;
+    int n, q;
+    ll a, b;
+    char c;
+
     cin >> n;
 
-    REP(i, 0, n)
-    cin >> arr[i];
-
-    int start = 0, end = n - 1;
-
-    while (start <= end)
+    REP(i, 1, n + 1)
     {
-        int mid = (start + end) / 2;
+        cin >> arr[i];
+        preSum[i] = preSum[i - 1] + arr[i];
+        ft[i] = preSum[i] - preSum[i - (i & -i)];
+    }
 
-        if ((mid == 0 || arr[mid] < arr[mid - 1]) && (mid == n - 1 || arr[mid] < arr[mid + 1]))
+    cin >> q;
+
+    REP(i, 1, q + 1)
+    {
+        cin >> c >> a >> b;
+
+        if (c == 'q')
         {
-            cout << mid;
-            return;
+            cout << query(b) - query(a - 1) << endl;
         }
-        else if (arr[mid] > arr[end])
+        else
         {
-            start = mid + 1;
-        }
-        else if (arr[mid] < arr[end])
-        {
-            end = mid - 1;
+            update(a, b);
         }
     }
 }

@@ -7,8 +7,8 @@ using namespace std;
 #define pii pair<int, int>
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
-#define maxN 100001
-#define INF 1000000000
+#define maxN 1000001
+#define INF 0x3f3f3f3f
 #define endl "\n"
 #define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
@@ -28,34 +28,28 @@ using namespace std;
 // while (L < q[i].l)
 //     remove(L++);
 
-int arr[maxN];
-
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, m;
 
-    REP(i, 0, n)
+    cin >> n >> m;
+
+    int arr[n + 1];
+
+    REP(i, 1, n + 1)
     cin >> arr[i];
 
-    int start = 0, end = n - 1;
+    bool dp[m + 1];
 
-    while (start <= end)
+    REP(i, 1, m + 1)
+    dp[i] = false;
+    dp[0] = true;
+
+    for (int i = 1; i <= n; i++)
     {
-        int mid = (start + end) / 2;
-
-        if ((mid == 0 || arr[mid] < arr[mid - 1]) && (mid == n - 1 || arr[mid] < arr[mid + 1]))
+        for (int j = m; j >= arr[i]; j--)
         {
-            cout << mid;
-            return;
-        }
-        else if (arr[mid] > arr[end])
-        {
-            start = mid + 1;
-        }
-        else if (arr[mid] < arr[end])
-        {
-            end = mid - 1;
+            dp[j] = dp[j] || dp[j - arr[i]];
         }
     }
 }

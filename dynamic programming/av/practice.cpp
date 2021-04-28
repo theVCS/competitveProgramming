@@ -8,55 +8,90 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
 #define maxN 1000001
+#define INF 1000000000
+#define endl "\n"
 #define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+// while (T < q[i].t)
+//     do_update(++T);
+// while (T > q[i].t)
+//     undo(T--);
+// while (R < q[i].r)
+//     add(++R);
+// while (L > q[i].l)
+//     add(--L);
+// while (R > q[i].r)
+//     remove(R--);
+// while (L < q[i].l)
+//     remove(L++);
 
-vector<int> arr[maxN];
-int dp[maxN][2];
-
-void solve(int node, int par = -1)
+void scs(string s, string t, int n, int m)
 {
-    vector<int> suffix, prefix;
-    int leaf = 1;
+    int dp[n + 1][m + 1];
+    memset(dp, 0, sizeof(dp));
 
-    for (int child : arr[node])
+    REP(i, 1, n + 1)
     {
-        if (child != par)
+        REP(j, 1, m + 1)
         {
-            solve(child, node);
-            suffix.push_back(max(dp[child][0], dp[child][1]));
-            prefix.push_back(max(dp[child][0], dp[child][1]));
-            leaf = 0;
+            if (s[i - 1] == t[j - 1])
+            {
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            }
+            else
+            {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
         }
     }
 
-    if (leaf)
-        return;
+    int i = n, j = m;
+    string res;
 
-    REP(i, 1, prefix.size())
-    prefix[i] += prefix[i - 1];
-
-    for (int i = suffix.size() - 2; i >= 0; i--)
+    while (i && j)
     {
-        suffix[i] += suffix[i + 1];
+        if (s[i - 1] == t[j - 1])
+        {
+            res = s[i - 1] + res;
+            i--, j--;
+        }
+        else
+        {
+            if (dp[i - 1][j] > dp[i][j - 1])
+            {
+                res = s[i - 1] + res;
+                i--;
+            }
+            else
+            {
+                res = t[j - 1] + res;
+                j--;
+            }
+        }
     }
 
-    dp[node][0] = suffix[0];
-    int c_no = 0;
-
-    for (int child : arr[node])
+    while (i)
     {
-        if (child == par)
-            continue;
-
-        int leftChild = c_no == 0 ? 0 : prefix[c_no - 1];
-        int rightChild = c_no == suffix.size() - 1 ? 0 : suffix[c_no + 1];
-
-        dp[node][1] = max(dp[node][1], leftChild + rightChild + dp[child][0] + 1);
+        res = s[i - 1] + res;
+        i--;
     }
+
+    while (j)
+    {
+        res = t[j - 1] + res;
+        j--;
+    }
+    cout << res;
+}
+
+void solve()
+{
+    string s, t;
+    cin >> s >> t;
+    scs(s, t, s.size(), t.size());
 }
 
 int main(int argc, char const *argv[])
@@ -65,19 +100,23 @@ int main(int argc, char const *argv[])
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int n, a, b;
+    // ifstream fi("input.txt");
+    // ofstream fo("output.txt");
 
-    cin >> n;
+    // fi >> input;
+    // fo << output;
 
-    REP(i, 0, n - 1)
+    int t = 1;
+
+    //cin >> t;
+
+    while (t--)
     {
-        cin >> a >> b;
-        arr[a].push_back(b), arr[b].push_back(a);
+        solve();
     }
 
-    solve(1);
-
-    cout << max(dp[1][0], dp[1][1]);
+    //fi.close();
+    //fo.close();
 
     return 0;
 }

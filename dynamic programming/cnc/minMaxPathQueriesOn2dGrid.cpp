@@ -7,7 +7,7 @@ using namespace std;
 #define pii pair<int, int>
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
-#define maxN 100001
+#define maxN 1001
 #define INF 1000000000
 #define endl "\n"
 #define all(x) (x).begin(), (x).end()
@@ -28,35 +28,41 @@ using namespace std;
 // while (L < q[i].l)
 //     remove(L++);
 
-int arr[maxN];
+int cost[maxN][maxN];
+int dp[maxN + 2][maxN + 2];
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, m;
 
-    REP(i, 0, n)
-    cin >> arr[i];
+    cin >> n >> m;
 
-    int start = 0, end = n - 1;
-
-    while (start <= end)
+    REP(i, 1, n + 1)
     {
-        int mid = (start + end) / 2;
+        REP(j, 1, m + 1)
+        cin >> cost[i][j];
+    }
 
-        if ((mid == 0 || arr[mid] < arr[mid - 1]) && (mid == n - 1 || arr[mid] < arr[mid + 1]))
+    REP(i, 1, n + 2)
+    dp[i][m + 1] = INF;
+    REP(i, 1, m + 2)
+    dp[n + 1][i] = INF;
+
+    dp[n + 1][m] = dp[n][m + 1] = 0;
+
+    for (int i = n; i >= 1; i--)
+    {
+        for (int j = m; j >= 1; j--)
         {
-            cout << mid;
-            return;
+            dp[i][j] = cost[i][j] + min(dp[i + 1][j], dp[i][j + 1]);
         }
-        else if (arr[mid] > arr[end])
-        {
-            start = mid + 1;
-        }
-        else if (arr[mid] < arr[end])
-        {
-            end = mid - 1;
-        }
+    }
+
+    REP(i, 1, n + 1)
+    {
+        REP(j, 1, m + 1)
+        cout << dp[i][j] << " ";
+        cout << endl;
     }
 }
 

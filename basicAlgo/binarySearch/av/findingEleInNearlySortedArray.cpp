@@ -8,7 +8,7 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i < b; i++)
 #define maxN 100001
-#define INF 1000000000
+#define INF 0x3f3f3f3f
 #define endl "\n"
 #define all(x) (x).begin(), (x).end()
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
@@ -32,32 +32,44 @@ int arr[maxN];
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, ele;
+
+    cin >> n >> ele;
 
     REP(i, 0, n)
     cin >> arr[i];
 
     int start = 0, end = n - 1;
-
+    
     while (start <= end)
     {
         int mid = (start + end) / 2;
 
-        if ((mid == 0 || arr[mid] < arr[mid - 1]) && (mid == n - 1 || arr[mid] < arr[mid + 1]))
+        if(arr[mid] == ele)
         {
             cout << mid;
             return;
         }
-        else if (arr[mid] > arr[end])
+        else if (mid > 1 && arr[mid - 1] == ele)
         {
-            start = mid + 1;
+            cout << mid - 1;
+            return;
         }
-        else if (arr[mid] < arr[end])
+        else if (mid < n && arr[mid + 1] == ele)
         {
-            end = mid - 1;
+            cout << mid + 1;
+            return;
+        }
+        else if (arr[mid] > ele)
+        {
+            end == mid - 2;
+        }
+        else
+        {
+            start = mid + 2;
         }
     }
+    cout << -1;
 }
 
 int main(int argc, char const *argv[])
