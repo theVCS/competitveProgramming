@@ -1,2 +1,0 @@
-bitwise sieve
-wheel factorizations

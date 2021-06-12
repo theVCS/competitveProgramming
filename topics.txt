@@ -1,0 +1,6 @@
+divide and conquer-->
+    a.)binary search
+    b.)mergesort
+    c.)quicksort
+    d.)minimum distance between two points from a given set of points(minimum perimeter of a triangle)
+    e.)starssen's method of matrix multiplication (not used for practicle purpose)

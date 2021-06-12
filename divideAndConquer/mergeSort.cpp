@@ -33,46 +33,57 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int arr[maxN];
+int helper[maxN];
+
+void merger(int l, int r)
+{
+    int mid = (l + r) / 2;
+
+    int i = l, j = mid + 1, index = l;
+
+    while (i <= mid && j <= r)
+    {
+        if(arr[i] < arr[j])helper[index++] = arr[i++];
+        else helper[index++] = arr[j++];
+    }
+    
+    while (i <= mid)
+    {
+        helper[index++] = arr[i++];
+    }
+
+    while (j <= r)
+    {
+        helper[index++] = arr[j++];
+    }
+    
+    REP(i,l,r)arr[i] = helper[i];
+}
+
+void mergeSort(int l, int r)
+{
+    if(l < r)
+    {
+        int mid = (l + r) / 2;
+
+        mergeSort(l,mid);
+        mergeSort(mid+1,r);
+        merger(l,r);
+    }
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    int n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
-    {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
+    cin >> n;
 
-        if(st.top().second == 0)st.pop();
-    }
+    REP(i,1,n)cin >> arr[i];
 
-    string res;
+    mergeSort(1,n);
 
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    REP(i,1,n)cout<<arr[i]<<" ";
 }
 
 int main(int argc, char const *argv[])

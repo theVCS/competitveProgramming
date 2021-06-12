@@ -33,46 +33,63 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-void solve()
+int n;
+vector<int> shirts[101];
+
+void input(int index)
 {
     string s;
-    int k;
-    cin >> s >> k;
+    getline(cin, s);
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    stringstream in(s);
+    int a;
+
+    while (in >> a)
     {
-        if (st.empty() == false && st.top().first == c)
+        shirts[a].push_back(index);
+    }
+}
+
+ll dp[101][1 << 10];
+
+ll fun(int shirt = 1, int mask = 0)
+{
+    if (mask == ((1 << n) - 1))
+        return 1;
+    else if (shirt == 101)
+        return 0;
+    else if (dp[shirt][mask] != -1)
+        return dp[shirt][mask];
+    else
+    {
+        ll ways = 0;
+
+        for (int people : shirts[shirt])
         {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
+            if ((mask & (1 << people)) == 0)
+                ways = (ways + fun(shirt + 1, mask | (1 << people))) % mod;
         }
 
-        if(st.top().second == 0)st.pop();
+        return dp[shirt][mask] = (fun(shirt + 1, mask) + ways) % mod;
+    }
+}
+
+void solve()
+{
+    cin >> n;
+    cin.ignore();
+
+    REP(i, 1, 100)
+    shirts[i].clear();
+
+    REP(i, 0, n - 1)
+    {
+        input(i);
     }
 
-    string res;
+    memset(dp, -1, sizeof(dp));
 
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    cout << fun() << endl;
 }
 
 int main(int argc, char const *argv[])
@@ -89,7 +106,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    //cin >> t;
+    cin >> t;
 
     while (t--)
     {

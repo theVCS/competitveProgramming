@@ -33,46 +33,58 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-void solve()
+int n;
+map<int, int> mp;
+struct cor
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    int x, y, index;
+} arr[100001];
+int res[100001];
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+bool cmp(cor a, cor b)
+{
+    if (a.x == b.x)
     {
-        if (st.empty() == false && st.top().first == c)
+        if (mp[a.x])
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            return a.y > b.y;
         }
         else
         {
-            st.push({c, 1 % k});
+            return a.y < b.y;
         }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
+    return a.x < b.x;
+}
 
-    while (st.empty() == false)
+void solve()
+{
+    cin >> n;
+
+    REP(i, 1, n)
     {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
+        cin >> arr[i].x >> arr[i].y;
+        mp[arr[i].x];
+        arr[i].index = i;
     }
-    
-    reverse(res.begin(), res.end());
 
-    cout<<res;
+    int flag = 0;
+
+    for (auto &e : mp)
+    {
+        e.second = flag;
+        flag ^= 1;
+    }
+
+    sort(arr + 1, arr + 1 + n, cmp);
+
+    REP(i, 1, n)
+    {
+        res[arr[i].index] = i - 1;
+    }
+
+    REP(i,1,n)cout<<res[i]<<endl;
 }
 
 int main(int argc, char const *argv[])

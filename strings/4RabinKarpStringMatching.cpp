@@ -38,7 +38,7 @@ void init(string s)
 
     for (int i = 1; i < s.size(); i++)
     {
-        dp[i] = (dp[i - 1] + (s[i] - 'a' + 1) * power) % mod;
+        dp[i] = (dp[i - 1] + (s[i] - 'a' + 1) * p) % mod;
         po[i] = p;
         p = (p * power) % mod;
     }

@@ -13,20 +13,18 @@ using namespace std;
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
 #define pi 3.141592653589793238
-#define printd(x) cout << fixed << setprecision(10) << x
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
 
-ll binExp(ll a, ll power, ll m = mod)
+ll binExp(ll a, ll power, ll m=mod)
 {
     ll res = 1;
 
     while (power)
     {
-        if (power & 1)
-            res = (res * a) % m;
+        if(power & 1)res = (res * a) % m;
         a = (a * a) % m;
         power >>= 1;
     }
@@ -35,44 +33,7 @@ ll binExp(ll a, ll power, ll m = mod)
 
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-
-    stack<pair<char, int>> st;
     
-    for (char c : s)
-    {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
-    }
-
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
 }
 
 int main(int argc, char const *argv[])

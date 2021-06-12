@@ -8,12 +8,11 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define maxN 1000001
+#define maxN 21
 #define endl "\n"
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
 #define pi 3.141592653589793238
-#define printd(x) cout << fixed << setprecision(10) << x
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
@@ -33,46 +32,43 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n;
+int dist[maxN][maxN];
+int dp[maxN][1 << 10];
+
+int fun(int curr_city, int mask)
+{
+    if (dp[curr_city][mask] != -1)
+        return dp[curr_city][mask];
+
+    int ans = INF;
+
+    REP(i, 0, n - 1)
+    {
+        if (mask & (1 << i))
+        {
+            ans = min(ans, dist[curr_city][i] + fun(i, mask ^ (1 << i)));
+        }
+    }
+
+    return dp[curr_city][mask] = (ans == INF ? dist[curr_city][0] : ans);
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    REP(i, 0, n - 1)
     {
-        if (st.empty() == false && st.top().first == c)
+        REP(j, 0, n - 1)
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            cin >> dist[i][j];
         }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
+    memset(dp, -1, sizeof(dp));
 
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    cout << fun(0, ((1 << n) - 1) ^ 1);
 }
 
 int main(int argc, char const *argv[])

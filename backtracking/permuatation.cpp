@@ -33,46 +33,35 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int N, M;
+
+void fun(int n, int m, int mask, string res = "")
+{
+    if (n == 0)
+    {
+        cout << res << endl;
+        return;
+    }
+    else
+    {
+        if (n > m)
+            fun(n - 1, m, mask, res + '0');
+
+        REP(i, 1, M)
+        {
+            if (mask & (1 << i))
+                continue;
+
+            fun(n - 1, m - 1, (mask | (1 << i)), res + char('0' + i));
+        }
+
+    }
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
-    {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
-    }
-
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    cin >> N >> M;
+    fun(N, M, 0);
 }
 
 int main(int argc, char const *argv[])

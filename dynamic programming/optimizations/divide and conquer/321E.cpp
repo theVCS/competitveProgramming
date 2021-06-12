@@ -8,7 +8,7 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define maxN 1000001
+#define maxN 4001
 #define endl "\n"
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
@@ -33,46 +33,43 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n, k;
+int uf[maxN][maxN];
+
+ll sumPro(int l, int r)
+{
+    return uf[r][r] - uf[l - 1][r] - uf[r][l - 1] + uf[l - 1][l - 1];
+}
+
+ll fun(int l, int r, int k)
+{
+    ll ans = INF;
+
+    REP(i,1,)
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n >> k;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    REP(i, 1, n)
     {
-        if (st.empty() == false && st.top().first == c)
+        REP(j, 1, n)
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            cin >> uf[i][j];
+            uf[i][j] += uf[i][j - 1];
         }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
-
-    while (st.empty() == false)
+    REP(j, 1, n)
     {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
+        REP(i, 1, n)
         {
-            res.push_back(ele.first);
+            uf[i][j] += uf[i - 1][j];
         }
-
-        st.pop();1
     }
-    
-    reverse(res.begin(), res.end());
 
-    cout<<res;
+    cout << fun(1, n, k);
 }
 
 int main(int argc, char const *argv[])

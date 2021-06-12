@@ -8,7 +8,7 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define maxN 1000001
+#define maxN 10001
 #define endl "\n"
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
@@ -19,60 +19,44 @@ using namespace std;
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
 //int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
 
-ll binExp(ll a, ll power, ll m = mod)
+ll binExp(ll a, ll power, ll m=mod)
 {
     ll res = 1;
 
     while (power)
     {
-        if (power & 1)
-            res = (res * a) % m;
+        if(power & 1)res = (res * a) % m;
         a = (a * a) % m;
         power >>= 1;
     }
     return res;
 }
 
+int n;
+ll p1[maxN], p2[maxN];
+ll p[2*maxN];
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+   cin >> n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+   RREP(i,n,0)cin>>p1[i];
+   RREP(i,n,0)cin>>p2[i];
+
+    REP(i,0,n)
     {
-        if (st.empty() == false && st.top().first == c)
+        REP(j,0,n)
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            p[i+j]+=p1[i]*p2[j];
         }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
-
-    while (st.empty() == false)
+    RREP(i,2*n,0)
     {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
+        cout<<p[i]<<" ";
+        p[i] = 0;
     }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    cout<<endl;
 }
 
 int main(int argc, char const *argv[])
@@ -89,7 +73,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    //cin >> t;
+    cin >> t;
 
     while (t--)
     {

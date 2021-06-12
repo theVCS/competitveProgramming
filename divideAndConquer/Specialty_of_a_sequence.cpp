@@ -8,7 +8,7 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define maxN 1000001
+#define maxN 100001
 #define endl "\n"
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
@@ -33,46 +33,19 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n, k;
+ll arr[maxN];
+
+
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n >> k;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    REP(i,1,n)
     {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
+        cin>>arr[i];
     }
-
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
 }
 
 int main(int argc, char const *argv[])

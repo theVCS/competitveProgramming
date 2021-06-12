@@ -13,7 +13,6 @@ using namespace std;
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
 #define pi 3.141592653589793238
-#define printd(x) cout << fixed << setprecision(10) << x
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 //int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
@@ -33,46 +32,44 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n;
+int arr[20][20];
+int dp[20][1<<20];
+
+int fun(int index, int bitmask)
+{
+    if (index == n)
+        return 0;
+
+    if(dp[index][bitmask] != -1)return dp[index][bitmask];
+
+    int ans = INF;
+
+    REP(i, 0, n - 1)
+    {
+        if (bitmask & (1 << i))
+        {
+            ans = min(ans, arr[i][index] + fun(index + 1, bitmask ^ (1 << i)));
+        }
+    }
+
+    return dp[index][bitmask] = ans;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    REP(i, 0, n - 1)
     {
-        if (st.empty() == false && st.top().first == c)
+        REP(j, 0, n - 1)
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            cin >> arr[i][j];
         }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    memset(dp,-1,sizeof(dp));
+    cout << fun(0, (1 << n) - 1);
 }
 
 int main(int argc, char const *argv[])

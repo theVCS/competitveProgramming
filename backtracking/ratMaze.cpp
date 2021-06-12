@@ -8,7 +8,7 @@ using namespace std;
 #define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define maxN 1000001
+#define maxN 10
 #define endl "\n"
 #define INF 1000000000
 #define all(x) (x).begin(), (x).end()
@@ -16,8 +16,9 @@ using namespace std;
 #define printd(x) cout << fixed << setprecision(10) << x
 //int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
 //int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
-//int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
-//int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
+int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+char p[] = {'U', 'L', 'D', 'R'};
 
 ll binExp(ll a, ll power, ll m = mod)
 {
@@ -33,46 +34,57 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n;
+int arr[maxN][maxN];
+bool vis[maxN][maxN];
+
+bool isValid(int x, int y)
+{
+    if (x < 1 || x > n || y < 1 || y > n || vis[x][y] || arr[x][y] == 0)
+        return false;
+
+    return true;
+}
+
+void dfs(int x = 1, int y = 1, string path = "")
+{
+    if (x == n && y == n)
+    {
+        cout << path << " ";
+        return;
+    }
+
+    vis[x][y] = true;
+
+    REP(i, 0, 3)
+    {
+        int X = x + dx[i];
+        int Y = y + dy[i];
+
+        if (isValid(X, Y))
+        {
+            path.push_back(p[i]);
+            dfs(X, Y, path);
+            path.pop_back();
+        }
+    }
+
+    vis[x][y] = false;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
+    REP(i, 1, n)
     {
-        if (st.empty() == false && st.top().first == c)
+        REP(j, 1, n)
         {
-            st.top().second += 1;
-            st.top().second %= k;
+            cin >> arr[i][j];
         }
-        else
-        {
-            st.push({c, 1 % k});
-        }
-
-        if(st.top().second == 0)st.pop();
     }
 
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    dfs();
 }
 
 int main(int argc, char const *argv[])

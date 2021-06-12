@@ -33,46 +33,43 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n;
+int arr[maxN];
+
+int pivotElement(int l, int r)
+{
+    int i = l;
+
+    REP(j, l, r - 1)
+    {
+        if (arr[j] < arr[r])
+            swap(arr[j], arr[i++]);
+    }
+
+    swap(arr[r], arr[i]);
+
+    return i;
+}
+
+void quickSort(int l, int r)
+{
+    if (l < r)
+    {
+        int pivot = pivotElement(l,r);
+        quickSort(l,pivot-1);
+        quickSort(pivot+1,r);
+    }
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
-    {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
+    REP(i, 1, n)
+    cin >> arr[i];
+    quickSort(1,n);
 
-        if(st.top().second == 0)st.pop();
-    }
-
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    REP(i,1,n)cout<<arr[i]<<" ";
 }
 
 int main(int argc, char const *argv[])

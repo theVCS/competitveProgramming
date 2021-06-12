@@ -33,46 +33,64 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
+int n, m;
+
+void generate_next_masks(int i, int curr_mask, int nexmask, vector<int> &next_masks)
+{
+    if (i == n + 1)
+    {
+        next_masks.push_back(nexmask);
+    }
+    else if (curr_mask & (1 << i))
+    {
+        generate_next_masks(i + 1, curr_mask, nexmask, next_masks);
+    }
+    else if (i == n)
+    {
+        generate_next_masks(i + 1, curr_mask, (nexmask | (1 << i)), next_masks);
+    }
+    else
+    {
+        generate_next_masks(i + 1, curr_mask, (nexmask | (1 << i)), next_masks);
+
+        if ((curr_mask & (1 << (i + 1))) == 0)
+            generate_next_masks(i + 2, curr_mask, nexmask, next_masks);
+    }
+}
+
+ll dp[1001][(1 << 11) + 1];
+
+ll fun(int col = 1, int mask = 0)
+{
+
+    if (col == m + 1)
+    {
+        return mask == 0;
+    }
+    else if (dp[col][mask] != -1)
+        return dp[col][mask];
+    else
+    {
+        ll ans = 0;
+        vector<int> next_masks;
+        generate_next_masks(1, mask, 0, next_masks);
+
+        for (int nexmask : next_masks)
+        {
+            ans = (ans + fun(col + 1, nexmask)) % mod;
+        }
+
+        return dp[col][mask] = ans;
+    }
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
+    cin >> n >> m;
 
-    stack<pair<char, int>> st;
-    
-    for (char c : s)
-    {
-        if (st.empty() == false && st.top().first == c)
-        {
-            st.top().second += 1;
-            st.top().second %= k;
-        }
-        else
-        {
-            st.push({c, 1 % k});
-        }
+    memset(dp, -1, sizeof(dp));
 
-        if(st.top().second == 0)st.pop();
-    }
-
-    string res;
-
-    while (st.empty() == false)
-    {
-        pair<char,int> ele = st.top();
-
-        while (ele.second--)
-        {
-            res.push_back(ele.first);
-        }
-
-        st.pop();1
-    }
-    
-    reverse(res.begin(), res.end());
-
-    cout<<res;
+    cout << fun();
 }
 
 int main(int argc, char const *argv[])
