@@ -155,39 +155,115 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+int n;
+vector<point> convHull;
+point p;
+
+bool cmp(point a, point b)
+{
+    ll z = direction(p, a, b);
+
+    if (z == 0)
+        return magnitude(a - p) < magnitude(b - p);
+    else
+        return z > 0;
+}
+
+point secondTop(stack<point> &st)
+{
+    point t = st.top();
+    st.pop();
+    point p = st.top();
+    st.push(t);
+    return p;
+}
+
+void conHull()
+{
+    convHull.clear();
+    int n = points.size();
+    int ptr = 0;
+
+    REP(i, 0, n - 1)
+    {
+        if (points[i].y < points[ptr].y || (points[i].y == points[ptr].y && points[i].x < points[ptr].x))
+            ptr = i;
+    }
+
+    p = points[ptr];
+    swap(points[ptr], points[0]);
+    sort(all(points), cmp);
+
+
+    stack<point> st;
+    st.push(points[0]);
+    st.push(points[1]);
+
+    REP(i, 2, n - 1)
+    {
+        while (st.size() > 1 && direction(secondTop(st), st.top(), points[i]) <= 0)
+        {
+            st.pop();
+        }
+
+        st.push(points[i]);
+    }
+
+    vector<pii> res;
+    cout << st.size() << endl;
+    while (!st.empty())
+    {
+        res.push_back({st.top().x, st.top().y});
+        st.pop();
+    }
+
+    RREP(i, res.size() - 1, 0)
+    {
+        cout << res[i].first << " " << res[i].second << endl;
+    }
+}
 
 void solve()
 {
-    cin >> s;
-
-    bool number = false, lowercase = false, upperCase = false;
-
-    for(char c: s)
+    while (true)
     {
-        for(int i = 0; i <= 9; i++)
+        cin >> n;
+
+        if (n == 0)
+            return;
+
+        int x, y;
+
+        map<int, set<int>> mp;
+
+        REP(i, 1, n)
         {
-            if(char('0' + i) == c)number = true;
+            cin >> x >> y;
+            mp[x].insert(y);
         }
-        for(int i = 0; i <= 25; i++)
+
+        points.clear();
+
+        for (auto e : mp)
         {
-            if(char('a' + i) == c)lowercase = true;
+            for (int y : e.second)
+                points.push_back(point(e.first, y));
         }
-        for(int i = 0; i <= 25; i++)
+
+        if (points.size() > 2)
         {
-            if(char('A' + i) == c)upperCase = true;
+            conHull();
+        }
+        else
+        {
+            cout << points.size() << endl;
+
+            for (point p : points)
+            {
+                cout << p.x << " " << p.y << endl;
+            }
         }
     }
-
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +280,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

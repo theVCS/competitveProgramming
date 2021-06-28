@@ -155,39 +155,118 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
-
-void solve()
+struct node
 {
-    cin >> s;
+    int data;
+    node *left, *right;
 
-    bool number = false, lowercase = false, upperCase = false;
-
-    for(char c: s)
+    node(int d = 0)
     {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
+        data = d;
+        left = right = NULL;
     }
+};
 
-    if(upperCase && lowercase && number)
+node *root = NULL;
+int v;
+
+bool del(node *n = root)
+{
+    if (n == NULL)
+        return false;
+
+    if (n->right != NULL)
     {
-        cout<<"YES"<<endl;
+        if (del(n->right))
+            n->right = NULL;
+        return false;
+    }
+    else if (n->left != NULL)
+    {
+        if (del(n->left))
+            n->left = NULL;
+        return false;
     }
     else
     {
-        cout<<"NO"<<endl;
+        v = n->data;
+        delete n;
+        return true;
     }
-    
+}
+
+void bfs()
+{
+    if (root == NULL)
+        return;
+
+    queue<node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        node *x = q.front();
+        q.pop();
+
+        cout << x->data << " ";
+
+        if (x->left)
+        {
+            q.push(x->left);
+        }
+
+        if (x->right)
+        {
+            q.push(x->right);
+        }
+    }
+}
+
+node *search(int val)
+{
+    if (root == NULL)
+        return NULL;
+
+    queue<node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        node *x = q.front();
+        q.pop();
+
+        if (x->data == val)
+            return x;
+
+        if (x->left)
+            q.push(x->left);
+
+        if (x->right)
+            q.push(x->right);
+    }
+}
+
+void deleteNode(int val)
+{
+    node *rq = search(val);
+    del();
+    rq->data = v;
+}
+
+void solve()
+{
+    root = new node(13);
+    root->left = new node(12);
+    root->right = new node(10);
+    root->left->left = new node(4);
+    root->left->right = new node(19);
+    root->right->left = new node(16);
+    root->right->right = new node(9);
+
+    bfs();
+    cout << endl;
+    deleteNode(12);
+    bfs();
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +283,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

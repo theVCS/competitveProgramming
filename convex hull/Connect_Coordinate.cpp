@@ -131,7 +131,7 @@ int direction(point pivot, point a, point b)
     return t;
 }
 
-#define maxN 1000001
+#define maxN 1001
 #define INF 1000000000
 #define mod 1000000007
 #define printd(x) cout << fixed << setprecision(10) << x
@@ -155,39 +155,73 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+int n;
+bool isconHul[maxN];
+vector<point> convHull;
+
+void fun()
+{
+    int ind = 0;
+
+    REP(i, 0, n - 1)
+    {
+        if (points[i].x < points[ind].x || (points[i].x == points[ind].x && points[i].y < points[ind].y))
+            ind = i;
+    }
+
+    convHull.push_back(points[ind]);
+    isconHul[points[ind].index] = true;
+    ll cnt = 0;
+
+    while (true)
+    {
+        int idx = 0;
+        REP(i, 0, n - 1)
+        {
+            if (direction(convHull.back(), points[idx], points[i]) < 0)
+                idx = i;
+        }
+
+        if (convHull.front() == points[idx])
+        {
+            break;
+        }
+        else
+        {
+            convHull.push_back(points[idx]);
+            isconHul[points[idx].index] = true;
+            cnt++;
+        }
+    }
+
+    ll ans = 0;
+
+    REP(i, 1, n)
+    {
+        if (isconHul[i] == false)
+        {
+            ans = (ans + binExp(2, cnt - 1) - ((cnt * (cnt - 1)) / 2) - 1 + 2 * mod) % mod;
+        }
+    }
+
+    cout << ans;
+}
 
 void solve()
 {
-    cin >> s;
+    cin >> n;
 
-    bool number = false, lowercase = false, upperCase = false;
+    ll x, y;
 
-    for(char c: s)
+    REP(i, 1, n)
     {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
+        cin >> x >> y;
+        point e = point(x, y);
+        e.index = i;
+        points.push_back(e);
     }
 
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
+    fun();
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +238,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

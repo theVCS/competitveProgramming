@@ -155,39 +155,24 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+struct node
+{
+    int val;
+    node *left, *right;
+
+    node (int _v)
+    {
+        val = _v;
+        left = right = NULL;
+    }
+};
 
 void solve()
 {
-    cin >> s;
-
-    bool number = false, lowercase = false, upperCase = false;
-
-    for(char c: s)
-    {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
-    }
-
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
+    node root = node(1);
+    root.left = new node(2);
+    root.right = new node(3);
+    root.left->left = new node(4);
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +189,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

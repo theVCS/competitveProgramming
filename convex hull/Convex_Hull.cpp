@@ -4,7 +4,7 @@
 using namespace std;
 #define ll long long int
 //#define bint cpp_int
-#define pii pair<int, int>
+#define pii pair<ll, ll>
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
 #define endl "\n"
@@ -105,6 +105,11 @@ double magnitude(point a)
     return sqrt(dot(a, a));
 }
 
+double magnitudeSqr(point a)
+{
+    return sqrt(dot(a, a));
+}
+
 double ang(point a, point b)
 {
     return acos(dot(a, b) / (magnitude(a) * magnitude(b)));
@@ -155,39 +160,102 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+int n;
+stack<point> st;
+point p;
+
+bool cmp(point a, point b)
+{
+    ll z = direction(p, a, b);
+
+    if (z == 0)
+        return magnitude(a - p) < magnitude(b - p);
+    else
+        return z > 0;
+}
+
+point secondTop(stack<point> &st)
+{
+    point t = st.top();
+    st.pop();
+    point p = st.top();
+    st.push(t);
+    return p;
+}
+
+void conHull()
+{
+    int n = points.size();
+    int ptr = 0;
+
+    REP(i, 0, n - 1)
+    {
+        if (points[i].y < points[ptr].y || (points[i].y == points[ptr].y && points[i].x < points[ptr].x))
+            ptr = i;
+    }
+    p = points[ptr];
+    sort(all(points), cmp);
+
+    st.push(points[0]);
+    st.push(points[1]);
+
+    REP(i, 2, n - 1)
+    {
+        while (st.size() > 1 && direction(secondTop(st), st.top(), points[i]) < 0)
+        {
+            st.pop();
+        }
+
+        st.push(points[i]);
+    }
+
+    vector<pii> res;
+
+    // REP(i, 1, n - 1)
+    // {
+    //     if (direction(points[0], st.top(), points[i]) == 0 && magnitudeSqr(points[i] - points[0]) < magnitudeSqr(st.top() - points[0]))
+    //         res.push_back({points[i].x, points[i].y});
+    // }
+
+    cout << res.size() + st.size() << endl;
+
+    // for (pii p : res)
+    // {
+    //     cout << p.first << " " << p.second << endl;
+    // }
+
+    while (st.empty() == false)
+    {
+        cout << st.top().x << " " << st.top().y << endl;
+        st.pop();
+    }
+}
 
 void solve()
 {
-    cin >> s;
+    cin >> n;
 
-    bool number = false, lowercase = false, upperCase = false;
+    ll x, y;
 
-    for(char c: s)
+    REP(i, 1, n)
     {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
+        cin >> x >> y;
+        points.push_back(point(x, y));
     }
 
-    if(upperCase && lowercase && number)
+    if (points.size() > 2)
     {
-        cout<<"YES"<<endl;
+        conHull();
     }
     else
     {
-        cout<<"NO"<<endl;
+        cout << points.size() << endl;
+
+        for (point p : points)
+        {
+            cout << p.x << " " << p.y << endl;
+        }
     }
-    
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +272,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

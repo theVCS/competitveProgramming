@@ -32,16 +32,14 @@ void merge(int a, int b)
 {
     a = find(a), b = find(b);
 
-    if (a != b)
-    {
-        if (parent[b] > parent[a])
-        {
-            swap(a, b);
+    if (a == b)
+        return;
 
-            parent[a] += parent[b];
-            parent[b] = a;
-        }
-    }
+    if (parent[b] > parent[a])
+        swap(a, b);
+
+    parent[a] += parent[b];
+    parent[b] = a;
 }
 
 int main(int argc, char const *argv[])

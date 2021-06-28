@@ -1,0 +1,80 @@
+struct line
+{
+    ll slope, yIntercept;
+
+    line(ll s = 0, ll y = -INF)
+    {
+        slope = s;
+        yIntercept = y;
+    }
+
+    ll f(ll x)
+    {
+        return slope * x + yIntercept;
+    }
+};
+
+line segTree2[4 * maxN];    // maxN -> maximum value of x
+
+// for maximum value
+void update(int si, int ss, int se, line l)
+{
+    int mid = (ss + se) / 2;
+    bool f1 = segTree[si].f(ss) < l.f(ss);
+    bool f2 = segTree[si].f(mid) < l.f(mid);
+
+    if (f2)
+        swap(segTree[si], l);
+
+    if (ss == se)
+        return;
+    else if (f1 != f2)
+        update(2 * si, ss, mid, l);
+    else
+        update(2 * si + 1, mid + 1, se, l);
+}
+
+ll query(int si, int ss, int se, int x)
+{
+    ll res = segTree[si].f(x);
+    int mid = (ss + se) / 2;
+
+    if (ss == se)
+        return res;
+    else if (x <= mid)
+        return max(res, query(2 * si, ss, mid, x));
+    else
+        return max(res, query(2 * si + 1, mid + 1, se, x));
+}
+
+
+// for minimum value
+void update(int si, int ss, int se, line l)
+{
+    int mid = (ss + se) / 2;
+    bool f1 = segTree[si].f(ss) > l.f(ss);
+    bool f2 = segTree[si].f(mid) > l.f(mid);
+
+    if (f2)
+        swap(segTree[si], l);
+
+    if (ss == se)
+        return;
+    else if (f1 != f2)
+        update(2 * si, ss, mid, l);
+    else
+        update(2 * si + 1, mid + 1, se, l);
+}
+
+ll query(int si, int ss, int se, int x)
+{
+    ll res = segTree[si].f(x);
+    int mid = (ss + se) / 2;
+
+    if (ss == se)
+        return res;
+    else if (x <= mid)
+        return min(res, query(2 * si, ss, mid, x));
+    else
+        return min(res, query(2 * si + 1, mid + 1, se, x));
+}

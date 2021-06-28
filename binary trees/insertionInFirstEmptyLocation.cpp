@@ -155,39 +155,67 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+struct node
+{
+    int data;
+    node *left, *right;
+
+    node(int d)
+    {
+        data = d;
+        left = right = NULL;
+    }
+};
+
+node *root = NULL;
+
+void insert(node *n)
+{
+    if (root == NULL)
+    {
+        root = n;
+        return;
+    }
+
+    queue<node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        node *x = q.front();
+        q.pop();
+
+        if (x->left == NULL)
+        {
+            x->left = n;
+            return;
+        }
+        else if (x->right == NULL)
+        {
+            x->right = n;
+            return;
+        }
+        else
+        {
+            q.push(x->left);
+            q.push(x->right);
+        }
+    }
+}
 
 void solve()
 {
-    cin >> s;
+    root = new node(10);
+    root->left = new node(11);
+    root->left->left = new node(7);
+    root->right = new node(9);
+    root->right->left = new node(15);
+    root->right->right = new node(8);
 
-    bool number = false, lowercase = false, upperCase = false;
+    node *n = new node(12);
+    insert(n);
 
-    for(char c: s)
-    {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
-    }
-
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
+    cout << root->left->right->data;
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +232,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

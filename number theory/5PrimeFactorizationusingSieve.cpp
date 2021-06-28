@@ -1,16 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long int
-#define max 1000001
-int sieve[max];
+#define maxN 1000001
+int sieve[maxN];
 
 void sieveFactors()
 {
-    for (int i = 2; i < max; i++)
+    for (int i = 2; i < maxN; i++)
     {
         if (!sieve[i])
         {
-            for (int j = i; j < max; j += i)
+            for (int j = i; j < maxN; j += i)
             {
                 if (!sieve[j])
                 {

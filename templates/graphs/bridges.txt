@@ -1,0 +1,32 @@
+vector<int>arr[maxN];
+int intime[maxN], low[maxN], timer;
+bool vis[maxN];
+
+void dfs(int node, int par = -1)
+{
+    intime[node] = low[node] = timer++;
+    vis[node] = true;
+ 
+    for (int child : arr[node])
+    {
+        if (child == par)
+        {
+            continue;
+        }
+        else if (vis[child])
+        {
+            low[node] = min(low[node], intime[child]);
+        }
+        else
+        {
+            dfs(child, node);
+ 
+            if (low[child] > intime[node])
+            {
+                // child - node is bridge
+            }
+ 
+            low[node] = min(low[node], low[child]);
+        }
+    }
+}

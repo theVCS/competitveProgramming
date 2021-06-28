@@ -5,11 +5,34 @@ using namespace std;
 #define ll long long int
 //#define bint cpp_int
 #define pii pair<int, int>
+#define mod 1000000007
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
+#define maxN 1000001
 #define endl "\n"
+#define INF 1000000000
 #define all(x) (x).begin(), (x).end()
 #define pi 3.141592653589793238
+#define printd(x) cout << fixed << setprecision(1) << x
+#define printpoint(p) cout << p.x << " " << p.y << " " << p.z
+//int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
+//int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
+//int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
+//int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+
+ll binExp(ll a, ll power, ll m = mod)
+{
+    ll res = 1;
+
+    while (power)
+    {
+        if (power & 1)
+            res = (res * a) % m;
+        a = (a * a) % m;
+        power >>= 1;
+    }
+    return res;
+}
 
 struct point
 {
@@ -124,70 +147,70 @@ int direction(point pivot, point a, point b)
 {
     long long t = cross((a - pivot), (b - pivot)).z;
 
-    // t > 0, a x b is anti clockwise
-    // t < 0, a x b is clockwise
+    // t > 0, b is more anti clockwise than a
+    // t < 0, b is more clockwise than a
     // t == 0, a and b are collinear
 
     return t;
 }
 
-#define maxN 1000001
-#define INF 1000000000
-#define mod 1000000007
-#define printd(x) cout << fixed << setprecision(10) << x
-#define printpoint(p) cout << p.x << " " << p.y << " " << p.z
-//int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
-//int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
-//int dx[] = {-1, 0, 1, 0, 1, -1, 1, -1};
-//int dy[] = {0, -1, 0, 1, -1, -1, 1, 1};
+int n;
+vector<point> convHull;
 
-ll binExp(ll a, ll power, ll m = mod)
+void convexHull()
 {
-    ll res = 1;
+    int pt = 0;
 
-    while (power)
+    REP(i, 0, n - 1)
     {
-        if (power & 1)
-            res = (res * a) % m;
-        a = (a * a) % m;
-        power >>= 1;
+        if (points[pt].x > points[i].x || (points[pt].x == points[i].x && points[pt].y > points[i].y))
+            pt = i;
     }
-    return res;
-}
 
-string s;
+    convHull.push_back(points[pt]);
+
+    while (true)
+    {
+        pt = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            ll z = direction(convHull.back(), points[pt], points[i]);
+
+            if (z < 0 || (z == 0 && dot((points[i] - convHull.back()), (points[i] - convHull.back())) > dot((points[pt] - convHull.back()), (points[pt] - convHull.back()))))
+                pt = i;
+        }
+
+        if (convHull.front() == points[pt])
+            break;
+        else
+            convHull.push_back(points[pt]);
+    }
+
+    int sz = convHull.size();
+    double d = 0;
+
+    REP(i, 0, sz - 1)
+    {
+        d += magnitude((convHull[i] - convHull[(i - 1 + sz) % sz]));
+    }
+
+    printd(d);
+}
 
 void solve()
 {
-    cin >> s;
+    cin >> n;
 
-    bool number = false, lowercase = false, upperCase = false;
+    ll x, y;
 
-    for(char c: s)
+    REP(i, 1, n)
     {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
+        cin >> x >> y;
+        points.push_back(point(x, y));
     }
 
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
+    convexHull();
 }
 
 int main(int argc, char const *argv[])
@@ -204,7 +227,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    cin >> t;
+    //cin >> t;
 
     while (t--)
     {

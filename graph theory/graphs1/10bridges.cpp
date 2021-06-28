@@ -50,7 +50,7 @@ void dfs(int node, int par = -1)
     
             if (intime[node] < low[child])
             {
-                    
+                    // node - child is a bridge
             }
         }
     }

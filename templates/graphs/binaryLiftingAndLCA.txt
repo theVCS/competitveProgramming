@@ -1,0 +1,75 @@
+int n;
+vector<int> arr[maxN];
+int parent[maxN][19];
+int level[maxN];
+
+void dfs(int node = 1, int par = -1, int l = 0)
+{
+    parent[node][0] = par;
+    level[node] = l;
+
+    for (int child : arr[node])
+    {
+        if (child == par)
+            continue;
+        dfs(child, node, l + 1);
+    }
+}
+
+void preprocess()
+{
+    dfs();
+
+    REP(j, 1, 18)
+    {
+        REP(i, 1, n)
+        {
+            if (parent[i][j - 1] == -1)
+            {
+                parent[i][j] = -1;
+            }
+            else
+            {
+                parent[i][j] = parent[parent[i][j - 1]][j - 1];
+            }
+        }
+    }
+}
+
+int BinaryLifting(int a, int d)
+{
+    while (d)
+    {
+        int i = log2(d);
+        a = parent[a][i];
+        d -= 1 << i;
+    }
+
+    return a;
+}
+
+int LCA(int a, int b)
+{
+    if (level[a] < level[b])
+        swap(a, b);
+
+    int d = level[a] - level[b];
+
+    while (d)
+    {
+        int i = log2(d);
+        a = parent[a][i];
+        d -= 1 << i;
+    }
+
+    if (a == b)
+        return a;
+
+    RREP(i, 18, 0)
+    {
+        if (parent[a][i] != -1 && parent[a][i] != parent[b][i])
+            a = parent[a][i], b = parent[b][i];
+    }
+
+    return parent[a][0];
+}

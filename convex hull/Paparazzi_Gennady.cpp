@@ -131,7 +131,7 @@ int direction(point pivot, point a, point b)
     return t;
 }
 
-#define maxN 1000001
+#define maxN 500001
 #define INF 1000000000
 #define mod 1000000007
 #define printd(x) cout << fixed << setprecision(10) << x
@@ -155,39 +155,73 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-string s;
+int n;
+
+int orientation(point p1, point p2, point p3)
+{
+    ll val = (p2.y - p1.y) * (p3.x - p2.x) -
+             (p2.x - p1.x) * (p3.y - p2.y);
+
+    if (val == 0)
+        return 0; // colinear
+
+    return (val > 0) ? 1 : 2; // clock or counterclock wise
+}
+
+void fun()
+{
+    stack<point> st;
+
+    st.push(points[0]);
+    st.push(points[1]);
+
+    REP(i, 2, n - 1)
+    {
+        while (st.size() > 1)
+        {
+            point p = st.top();
+            st.pop();
+
+            ll orient = direction(st.top(), p, points[i]);
+            if (orient < 0LL)
+            {
+                st.push(p);
+                break;
+            }
+        }
+
+        st.push(points[i]);
+    }
+
+    ll ans = 0;
+
+    while (st.size() >= 2)
+    {
+        point a = st.top();
+        st.pop();
+        point b = st.top();
+
+        ans = max(ans, a.x - b.x);
+    }
+
+    cout << ans << endl;
+}
 
 void solve()
 {
-    cin >> s;
+    cin >> n;
 
-    bool number = false, lowercase = false, upperCase = false;
+    ll d;
 
-    for(char c: s)
+    points.clear();
+
+    REP(i, 1, n)
     {
-        for(int i = 0; i <= 9; i++)
-        {
-            if(char('0' + i) == c)number = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('a' + i) == c)lowercase = true;
-        }
-        for(int i = 0; i <= 25; i++)
-        {
-            if(char('A' + i) == c)upperCase = true;
-        }
+        cin >> d;
+        points.push_back(point(i, d));
     }
 
-    if(upperCase && lowercase && number)
-    {
-        cout<<"YES"<<endl;
-    }
-    else
-    {
-        cout<<"NO"<<endl;
-    }
-    
+    fun();
 }
 
 int main(int argc, char const *argv[])

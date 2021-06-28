@@ -1,0 +1,38 @@
+vector<int> arr[101];
+int timer, low[101], intime[101];
+bool vis[101];
+
+void dfs(int node, int par = -1)
+{
+    vis[node] = true;
+    intime[node] = low[node] = timer++;
+    int children = 0;
+
+    for (int child : arr[node])
+    {
+        if (child == par)
+        {
+            continue;
+        }
+        else if (vis[child])
+        {
+            low[node] = min(low[node], intime[child]);
+        }
+        else
+        {
+            dfs(child, node);
+            low[node] = min(low[node], low[child]);
+
+            if (low[child] >= intime[node] && par != -1)
+            {
+                // node is a articulation point
+            }
+            children++;
+        }
+    }
+
+    if (par == -1 && children > 1)
+    {
+        // node is a articulation point
+    }
+}
