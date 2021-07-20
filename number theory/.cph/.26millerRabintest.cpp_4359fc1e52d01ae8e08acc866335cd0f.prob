@@ -1,0 +1,1 @@
+{"name":"Local: 26millerRabintest","url":"d:\\study material\\comp prog\\number theory\\26millerRabintest.cpp","tests":[{"id":1625809775404,"input":"5\n2\n3\n4\n5\n6","output":"YES\nYES\nNO\nYES\nNO"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\number theory\\26millerRabintest.cpp","group":"local","local":true}

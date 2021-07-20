@@ -30,6 +30,7 @@ ll getHash(string s)
         value = (value + (s[i] - 'a' + 1) * power) % mod;
         power = (power * p) % mod;
     }
+    
     return value;
 }
 

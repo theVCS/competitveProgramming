@@ -1,0 +1,43 @@
+WHY OOPS:
+
+1. C++ was designed to add feature of classes and objects to C language.
+2. As size of program increases readibility, maintainability and bug-free nature of program decreases.
+3. This was the major problem of procedure oriented languages like C.
+4. Data was almost neglected, data security was easily compromised.
+
+
+PROCEDURAL ORIENTED PROGRAMMING:
+
+1. Consists of writing set of instructions for computer to follow.
+2. Main focus is on functions and not on flow of data.
+3. Functions can use local, global data means no data security.
+4. Data moves from function to function.
+
+
+OBJECT ORIENTED PROGRAMMING:
+
+1. Works on classes and objects.
+2. Class template to create objects.
+3. Treats data as a critical element.
+4. Decomposes data into objects and builds data and functions around the objects.
+
+
+BASIC CONCEPTS IN OOPS:
+
+
+1. Classes: Basic template for creating objects.
+2. Objects: Basic run time entities.
+3. Data Abstraction and Encapsulation: Wrapping data and functions in single unit.
+4. Inheritance: Properties of one class can be inhertited to other class.
+5. Polymorphism: ability to take more than one form.
+6. Dynamic Binding: code which will execute is known untill the program runs.
+7. Message Passing: Object.Function(data) call format
+
+
+BENEFITS OF OOPS: 
+
+
+1. Better code reusability using objects and Inheritance.
+2. Data hiding helps build secure systems.
+3. Multiple objects can co-exits without any interference.
+4. Software complexity can be easily managed.

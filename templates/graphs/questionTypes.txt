@@ -1,0 +1,10 @@
+A.) given a DAG(directed acyclic graph) and need to find all those nodes which can be visited by all the other nodes in the graph:
+solution: make condensation graph and then check the outdegree of the nodes of condensation graph if the number of nodes with outdegree 0 is more than one them there is no node with above property else if it is 1 then the nodes representing the node in condensation graph will be the ans (note -> A DAG always have atleat one node as outdegree 0).
+
+B.) build mst for each edge of the graph : 
+solution.) make mst, then for each edge to be added in mst will always make a cycle and we need to remove a edge to remove this cycle this can be done using find the maximum edge with between the path of the required nodes. Example: we need to add a edge which joins a and b then we shall find maximum in path a - lca and lca - b, which can be efficiently done using HLD.
+
+
+C.) Finding lca when root of the tree changes:
+Given the query “r u v” what can be the answer? The possible answers are r, u, v, LCA(r, u), LCA(r, v), LCA(u, v) where LCA(x, y) is LCA of x and y when the tree is rooted at 1.
+The LCA of u and v when the root is at r is the vertex x such that the sum of shortest path from x to u, x to v and x to r is smallest.

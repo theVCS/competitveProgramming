@@ -1,0 +1,20 @@
+int n, q;
+int FT[2 * maxN], intime[maxN], outime[maxN], timer;
+vector<int> arr[maxN];
+
+void euler(int node, int par = -1)
+{
+    intime[node] = ++timer;
+    FT[timer] = node;
+
+    for (int child : arr[node])
+    {
+        if (child != par)
+        {
+            euler(child, node);
+        }
+    }
+
+    outime[node] = ++timer;
+    FT[timer] = node;
+}

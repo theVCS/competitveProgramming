@@ -1,0 +1,62 @@
+const int blk = 900;
+ll arr[maxN], f[120];
+int n, q, a, b;
+
+void init()
+{
+    REP(i, 1, n)
+    f[i / blk] = min(arr[i], f[i / blk]);
+}
+
+ll query(int l, int r)
+{
+    int lblk = l / blk;
+    int rblk = r / blk;
+
+    ll res = INT_MAX;
+
+    if (lblk == rblk)
+    {
+        REP(i, l, r)
+        {
+            res = min(res, arr[i]);
+        }
+    }
+    else
+    {
+        REP(i, l, blk * (lblk + 1) - 1)
+        {
+            res = min(res, arr[i]);
+        }
+
+        REP(i, lblk + 1, rblk - 1)
+        {
+            res = min(res, f[i]);
+        }
+
+        REP(i, rblk * blk, r)
+        {
+            res = min(res, arr[i]);
+        }
+    }
+
+    return res;
+}
+
+void solve()
+{
+    cin >> n >> q;
+
+    memset(f, INT_MAX, sizeof(f));
+
+    REP(i, 1, n)
+    cin >> arr[i];
+
+    init();
+
+    while (q--)
+    {
+        cin >> a >> b;
+        cout << query(a, b) << endl;
+    }
+}

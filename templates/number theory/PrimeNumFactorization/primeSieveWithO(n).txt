@@ -1,0 +1,19 @@
+// a is primes if (lp[a] == a)
+
+int lp[maxN];
+vector<int> primes;
+
+void init()
+{
+    for (int i=2; i<maxN; ++i) 
+    {
+        if (lp[i] == 0) 
+        {
+            lp[i] = i;
+            primes.push_back (i);
+        }
+    
+        for (int j=0; j< primes.size() && primes[j]<=lp[i] && 1LL*i*primes[j]<maxN; ++j)
+            lp[i * primes[j]] = primes[j];
+    }
+}

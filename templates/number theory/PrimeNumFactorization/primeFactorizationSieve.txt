@@ -1,0 +1,31 @@
+int sieve[maxN];
+
+void init()
+{
+    for (int i = 2; i < maxN; i++)
+    {
+        if (!sieve[i])
+        {
+            for (int j = i; j < maxN; j += i)
+            {
+                if (!sieve[j])
+                {
+                    sieve[j] = i;
+                }
+            }
+        }
+    }
+}
+
+map<int,int> primeFactors(int _number)
+{
+    map<int,int>mp;
+
+    while (sieve[_number])
+    {
+        mp[sieve[_number]]++;
+        _number = _number / sieve[_number];
+    }
+
+    return mp;
+}

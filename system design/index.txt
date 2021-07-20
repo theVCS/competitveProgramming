@@ -1,0 +1,11 @@
+1. horizontal vs vertical scaling -> https://www.geeksforgeeks.org/horizontal-and-vertical-scaling-in-databases/
+
+2. load balancer -> https://www.geeksforgeeks.org/load-balancer-system-design-interview-question/
+
+3. consistent hashing -> https://www.geeksforgeeks.org/hashing-in-distributed-systems/
+
+4. message queue -> https://medium.com/must-know-computer-science/system-design-message-queues-245612428a22
+
+5. Monolithic vs Microservices architecture -> https://www.geeksforgeeks.org/monolithic-vs-microservices-architecture/
+
+Sharding -> https://www.geeksforgeeks.org/what-is-sharding/

@@ -1,0 +1,69 @@
+vector<int> arr[maxN];
+bool vis[maxN], onStack[maxN];
+int intime[maxN], low[maxN], timer;
+stack<int> st;
+
+void tarjan(int node)
+{
+    vis[node] = true;
+    intime[node] = low[node] = ++timer;
+    onStack[node] = true;
+    st.push(node);
+
+    for (int child : arr[node])
+    {
+        if (vis[child] && onStack[child])
+        {
+            low[node] = min(low[node], intime[child]);
+        }
+        else if (!vis[child])
+        {
+            tarjan(child);
+
+            if (onStack[child])
+            {
+                low[node] = min(low[node], low[child]);
+            }
+        }
+    }
+
+    if (intime[node] == low[node])
+    {
+        while (true)
+        {
+            int ut = st.top();
+            st.pop();
+            onStack[ut] = false;
+
+            cout << ut << " ";
+
+            if (ut == node)
+            {
+                break;
+            }
+        }
+    }
+}
+
+int main(int argc, char const *argv[])
+{
+    int n, m, a, b;
+
+    cin >> n >> m;
+
+    while (m--)
+    {
+        cin >> a >> b;
+        arr[a].push_back(b);
+    }
+
+    REP(i, 1, n)
+    {
+        if (!vis[i])
+        {
+            tarjan(i);
+        }
+    }
+
+    return 0;
+}

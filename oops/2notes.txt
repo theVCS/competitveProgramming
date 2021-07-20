@@ -1,0 +1,22 @@
+The only difference between a struct and class in C++ is the default accessibility of
+member variables and methods. In a struct they are public; in a class they are private.
+Therefore, structure and classes can be used interchangebly.
+
+
+Access Specifier: 
+    a.) Private: These kind of access specifer can restrict the members to be used or called outside the class. If all the members are private then that class is completely isolated and do not serve any purpose.
+
+    b.) Public: These kind of access specifier allows the members to be used outside the class. If we want to use a class or its members then atleast one member should be public.
+
+
+Nesting Of Member Function: 
+        a.) it simply means we can access the member fucntions of class by any other member fucntion of same class without use of any dot operator. 
+
+
+Good Practices:
+    We should always make data members to be private and member function to be public, other wise data security feature will not be followed.
+
+
+Memory Management: in classes and objects same memory block is assigned to member function and for each object different memory block is assigned for data members.
+
+

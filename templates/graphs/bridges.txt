@@ -21,10 +21,10 @@ void dfs(int node, int par = -1)
         {
             dfs(child, node);
  
-            if (low[child] > intime[node])
-            {
-                // child - node is bridge
-            }
+                if (low[child] > intime[node])
+                {
+                    // child - node is bridge
+                }
  
             low[node] = min(low[node], low[child]);
         }

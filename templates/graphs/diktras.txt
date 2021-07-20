@@ -1,0 +1,7 @@
+NOTE:::=> IN SOME CASES WE MAY HAVE DISTANCE OF NODE LESS THAN DISTANCE IN QUEUE, IN SUCH CASE WE MAY JUST CONTINUE AND LEAVE PROCESSING OF THAT STATE.
+
+question types:
+
+A:) in place of one 1 path we are asked to find the k shortest flight routes from source (src) and destination (dest), example: https://cses.fi/problemset/task/1196/
+Solution:) we just make distance array size nodes * k and the always compare kth distance of each child with new distance and sort after all operations.
+

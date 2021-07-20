@@ -1,0 +1,1 @@
+{"name":"Local: FermatPrimalityTest","url":"d:\\study material\\comp prog\\number theory\\FermatPrimalityTest.cpp","tests":[{"id":1625807090775,"input":"5\n2\n3\n4\n5\n6","output":"YES\nYES\nNO\nYES\nNO"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\number theory\\FermatPrimalityTest.cpp","group":"local","local":true}

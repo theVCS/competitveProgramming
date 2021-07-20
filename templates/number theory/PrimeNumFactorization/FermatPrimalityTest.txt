@@ -1,0 +1,21 @@
+// based on Fermat Little Test which states: 
+//1. Fermat's little theorem states, that for a prime number p and a coprime integer a the following equation holds:              a^(p−1) ≡ 1 mod p where  2 <= a <= p - 2
+//In general this theorem doesn't hold for composite numbers.
+
+// if p is composite and for some a Fermat's little theorem holds then a is known as fermat liar and P in this case is known as Fermat pseudoprime
+
+// carmichael number: there are some numbers example (561 = 3 * 11 * 17) which are composite but for each a Such that gcd(a,p) = 1, fermat little theorem holds.
+
+bool probablePrime(ll n, int iter = 5)
+{
+    if(n <= 4)
+        return n == 2 | n == 3;
+
+    REP(i,1,iter)
+    {
+        ll num = rand() % (n - 3) + 2;
+        if(binExp(num,n-1,n)!=1)return false;
+    }
+    
+    return true;
+}

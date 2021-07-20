@@ -1,0 +1,127 @@
+int n, m;
+const int blk = 900;
+ll arr[maxN], fre[maxN], last[maxN], nq, nu, res;
+ll ans[maxN];
+bool use[maxN];
+
+struct Query
+{
+    int l, r, lblk, rblk, t, index;
+} q[100005];
+
+struct Update
+{
+    int index, new_y, prev_y;
+} u[100005];
+
+bool cmp(Query a, Query b)
+{
+    return (a.lblk < b.lblk) || (a.lblk == b.lblk && a.rblk < b.rblk) || (a.lblk == b.lblk && a.rblk == b.rblk && a.t < b.t);
+}
+
+void add(int index)
+{
+    ll ele = arr[index];
+    use[index] = true;
+
+    if (++fre[ele] == 1)
+        res += ele;
+}
+
+void remove(int index)
+{
+    ll ele = arr[index];
+    use[index] = false;
+
+    if (--fre[ele] == 0)
+        res -= ele;
+}
+
+void reflect_update(int index, int ele)
+{
+    if (use[index] == false)
+    {
+        arr[index] = ele;
+        return;
+    }
+    remove(index);
+    arr[index] = ele;
+    add(index);
+}
+
+void do_update(int index)
+{
+    reflect_update(u[index].index, u[index].new_y);
+}
+
+void undo(int index)
+{
+    reflect_update(u[index].index, u[index].prev_y);
+}
+
+void solve()
+{
+    char code;
+    int a, b;
+
+    cin >> n >> m;
+
+    // blk = max(1, (int)pow(n, 2.0 / 3));
+
+    REP(i, 1, n)
+    {
+        cin >> arr[i];
+        last[i] = arr[i];
+    }
+
+    REP(i, 1, m)
+    {
+        cin >> code;
+
+        // updation
+        if (code == 'U')
+        {
+            nu++;
+            cin >> a >> b;
+            u[nu].index = a;
+            u[nu].new_y = b;
+            u[nu].prev_y = last[a];
+            last[a] = b;
+        }
+        // querying
+        else
+        {
+            nq++;
+            cin >> a >> b;
+            q[nq].l = a;
+            q[nq].r = b;
+            q[nq].lblk = a / blk;
+            q[nq].rblk = b / blk;
+            q[nq].index = nq;
+            q[nq].t = nu;
+        }
+    }
+
+    sort(q + 1, q + nq + 1, cmp);
+
+    for (int i = 1, L = 2, R = 1, T = 0; i <= nq; i++)
+    {
+        while (T < q[i].t)
+            do_update(++T);
+        while (T > q[i].t)
+            undo(T--);
+        while (R < q[i].r)
+            add(++R);
+        while (L > q[i].l)
+            add(--L);
+        while (R > q[i].r)
+            remove(R--);
+        while (L < q[i].l)
+            remove(L++);
+
+        ans[q[i].index] = res;
+    }
+
+    REP(i, 1, nq)
+    cout << ans[i] << endl;
+}

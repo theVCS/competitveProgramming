@@ -1,0 +1,68 @@
+vector<int> arr[maxN], order, SS;
+bool vis[maxN];
+
+void dfs(int node)
+{
+    vis[node] = true;
+
+    for (int child : arr[node])
+    {
+        if (vis[child])
+            continue;
+        dfs(child);
+    }
+
+    order.push_back(node);
+}
+
+void dfs1(int node)
+{
+    vis[node] = true;
+
+    for (int child : arr[node])
+    {
+        if (vis[child])
+            continue;
+        dfs1(child);
+    }
+
+    SS.push_back(node);
+}
+
+int main(int argc, char const *argv[])
+{
+    int n, m, a, b;
+
+    cin >> n >> m;
+
+    while (m--)
+    {
+        cin >> a >> b;
+        arr[a].push_back(b);
+    }
+
+    REP(i, 1, n)
+    {
+        if (vis[i] == false)
+            dfs(i);
+    }
+
+    REP(i, 1, n)
+    vis[i] = false;
+
+    REP(i, 1, n)
+    {
+        if (!vis[order[i - 1]])
+        {
+            SS.clear();
+            dfs1(order[i - 1]);
+
+            for (int node : SS)
+                cout << node << " ";
+
+            cout << endl;
+        }
+    }
+
+    return 0;
+}

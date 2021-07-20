@@ -1,0 +1,45 @@
+int n, m;
+vector<int>arr[maxN];
+bool vis[maxN];
+
+void dfs(int node)
+{
+    vis[node] = true;
+
+    for (int child : arr[node])
+    {
+        if (vis[child])
+            continue;
+        dfs(child);
+    }
+}
+
+bool check()
+{
+    int i = 1;
+
+    REP(j,1,n)
+        if (arr[j].size())
+        {
+            i = j;
+            break;
+        }
+
+    dfs(i);
+
+    int cnt = 0;
+
+    REP(node,1,n)
+    {
+        if (arr[node].size() && vis[node] == false)
+            return false;
+        if (arr[node].size() & 1)
+            cnt++;
+    }
+
+    // If odd count is 2, then semi-eulerian.
+    // If odd count is 0, then eulerian
+    // Note that odd count can never be 1 for undirected graph
+
+    return (cnt == 0);
+}

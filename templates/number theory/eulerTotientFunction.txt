@@ -1,0 +1,52 @@
+int phi[1000001];
+
+void eulerTot()
+{
+    for (int i = 1; i < maxN; i++)
+    {
+        phi[i] = i;
+    }
+
+    for (int i = 2; i < maxN; i++)
+    {
+        if (phi[i] == i)
+        {
+            for (int j = i; j < maxN; j += i)
+            {
+                phi[j] /= i;
+                phi[j] *= i - 1;
+            }
+        }
+    }
+}
+
+int eulerTot(int n)
+{
+    int res = n;
+
+    for (int i = 2; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            res *= i - 1;
+            res /= i;
+
+            while (n % i == 0)
+            {
+                n /= i;
+            }
+        }
+    }
+
+    if (n > 1)
+    {
+        res *= n - 1;
+        res /= n;
+    }
+    return res;
+}
+
+// phi is a multiplicative function: phi[a*b] = phi[a]*phi[b], where __gcd(a,b)==1
+// phi[n] = n⋅((p1−1)/p1)⋅((p2−1)/p2)⋯((pk−1)/pk), where n = (p1^a1)⋅(p2^a2)⋯(pk^ak) or p1, p2 , p3 are prime divisors of n
+
+//summation__gcd(i,N) = summation (d * phi[N/d]), where d is divisors of d

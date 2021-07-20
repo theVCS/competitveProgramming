@@ -1,0 +1,11 @@
+ll inverse[maxN];
+
+void init()
+{
+    inverse[0] = inverse[1] = 1;
+    REP(i,2,maxN-1)
+        inverse[i] = ((inverse[mod%i])*(mod - mod/i)) % mod;
+}
+
+
+// other method to find mod inverse is binExp(a,mod-2);

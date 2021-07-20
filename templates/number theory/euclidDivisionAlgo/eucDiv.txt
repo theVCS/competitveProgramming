@@ -1,0 +1,105 @@
+ll gcd(ll a, ll b)
+{
+    return (b ? gcd(b,a % b) : a);
+}
+
+ll gcd(ll a, ll b)
+{
+    while(b)
+    {
+        a %= b;
+        swap(a,b);
+    }
+
+    return a;
+}
+
+// gcd(0,a) = gcd(a,0) = a;
+// gcd(a,b) = gcd(b,a)
+// gcd(a,b) = gcd(a-b,b), a >= b
+
+// runtime -> if this code runs for n time then we can take two fibonacci number (1,1,2,3,5,.....)
+// at index n + 1 and n + 2 -> lames theorem
+
+
+const int N = 3;
+int n = 2;
+ll matrix[N][N];
+ll identity[N][N];
+ll res[N][N];
+
+void multiply(ll a[][N], ll b[][N])
+{
+    REP(i, 1, n)
+    {
+        REP(j, 1, n)
+        {
+            res[i][j] = 0;
+
+            REP(k, 1, n)
+            {
+                a[i][k] %= mod;
+                b[k][j] %= mod;
+                res[i][j] = (res[i][j] + (a[i][k] * b[k][j]) % mod) % mod;
+            }
+        }
+    }
+
+    REP(i, 1, n)
+    REP(j, 1, n)
+    a[i][j] = res[i][j];
+}
+
+void matExp(long long p)
+{
+    while (p)
+    {
+        if (p & 1)
+            multiply(identity, matrix);
+        multiply(matrix, matrix);
+        p >>= 1;
+    }
+}
+
+ll fib(long long p) // n = p where n is nth fib number
+{
+    p %= 2000000018;
+    if(p == 0)return 0;
+    p--;
+
+    identity[1][1] = identity[2][2] = 1;
+    identity[1][2] = identity[2][1] = 0;
+
+    matrix[1][1] = 0;
+    matrix[1][2] = matrix[2][1] = matrix[2][2] = 1;
+
+    matExp(p);
+
+    // 0 1 1 2 3 5 so on
+    // return identity[1][2];
+
+    //1 1 2 3 5
+    return identity[2][2];
+
+    // 1 2 3 5
+    // return (identity[2][1] + identity[2][2]) % mod;
+}
+
+void solve()
+{
+    ll n;
+    cin >> n;
+
+    if (n == 0)
+    {
+        cout << 0 << endl;
+    }
+    else if (n == 1)
+    {
+        cout << 2 << endl;
+    }
+    else
+    {
+        cout<<fib(n+1)<<" "<<fib(n + 2)<<endl;
+    }
+}

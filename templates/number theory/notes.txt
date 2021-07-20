@@ -1,0 +1,19 @@
+1. Fermat's little theorem (see also Euler's totient function) states, that for a prime number p and a coprime integer a the following equation holds:              a^(p−1) ≡ 1 mod p
+In general this theorem doesn't hold for composite numbers.
+
+2. for testing a 32 bit integer it is only necessary to check the first 4 prime bases: 2, 3, 5 and 7. And for testing 64 bit integer it is enough to check the first 12 prime bases: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, and 37.
+
+3. for finding (a ^ (b ^ c)) % n just find x = (b ^ c) % (n - 1) and then just find (a ^ x) % n
+
+4. y = x ^ (k / x), will be max when x = e or in integer form it is 3. (https://palak001.medium.com/spoj-locker-magic-of-the-locker-a758bccf432f)
+
+5. all properties of fibonacci numbers (https://proofwiki.org/wiki/Properties_of_Fibonacci_Numbers)
+
+6. finding transformation matrix:
+    find number of terms on which f(i) depends let it be k then transformation matrix will have dimension k * k :)
+
+    let k = 2, then for f(i) = 2*f(i - 1) + 8*f(i - 2):
+
+    [f0  f1]|x1 x2| =  [f1 f2], from here we can solve x1, x2, x3, x4
+            |x3 x4|
+

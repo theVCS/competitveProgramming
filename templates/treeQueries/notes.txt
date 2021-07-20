@@ -1,0 +1,1 @@
+many tree queries question can be solved by just applying euler tour technique with mos, sqrt, segment tree etc
