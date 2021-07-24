@@ -7,7 +7,7 @@ using namespace std;
 #define pii pair<int, int>
 #define REP(i, a, b) for (int i = a; i <= b; i++)
 #define RREP(i, a, b) for (int i = a; i >= b; i--)
-#define endl "\n"
+// #define endl "\n"
 #define all(x) (x).begin(), (x).end()
 #define pi 3.141592653589793238
 
@@ -250,7 +250,7 @@ public:
         return (temp->cnt > 0);
     }
 
-    /** Returns if the word is in the trie. */
+    /** delete a word from trie */
     void del(string &s)
     {
         if (search(s) == false)
@@ -268,10 +268,59 @@ public:
         temp->cnt--;
         temp->flag = false;
     }
+
+    // bool isLast()
+
+    void printSuggestions(Node *node, string s)
+    {
+        if(node->flag)
+        {
+            cout<<s<<endl;
+        }
+
+        for (int i = 0; i < sz; i++)
+        {
+            if(node->arr[i])
+            {
+                s.push_back('a'+i);
+                printSuggestions(node->arr[i], s);
+                s.pop_back();
+            }
+        }
+        
+    }
+
+    void autoComplete(string &s)
+    {
+        Node *temp = root;
+
+        for(char c: s)
+        {
+            int index = c - 'a';
+            if(temp->arr[index]==NULL||temp->cnt==0)return;
+            temp = temp->arr[index];
+        }
+
+        printSuggestions(temp,s);
+    }
 };
 
 void solve()
 {
+    Trie obj;
+
+    while (true)
+    {
+        int code;
+        string s;
+    
+        cin >> code >> s;
+
+        if(code == 1)
+            obj.insert(s);
+        else obj.autoComplete(s);
+    }
+    
 }
 
 int main(int argc, char const *argv[])

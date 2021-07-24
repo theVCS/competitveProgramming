@@ -131,7 +131,7 @@ int direction(point pivot, point a, point b)
     return t;
 }
 
-#define maxN 1000001
+#define maxN 100001
 #define INF 1000000000
 #define mod 1000000007
 #define printd(x) cout << fixed << setprecision(10) << x
@@ -163,115 +163,39 @@ ll binExp(ll a, ll power, ll m = mod)
     while (power)
     {
         if (power & 1)
-            res = mulmod(res, a, m);
-        a = mulmod(a, a, m);
+            res = mulmod(res,a,m);
+        a = mulmod(a,a,m);
         power >>= 1;
     }
     return res;
 }
 
-const int sz = 26;
+int n;
+int arr[maxN];
 
-struct Node
+void insertionSort()
 {
-    int cnt;
-    Node *arr[sz];
-    bool flag;
-
-    Node()
+    REP(i,2,n)
     {
-        cnt = 0, flag = false;
+        int ele = arr[i];
+        int j = i;
 
-        for (int i = 0; i < sz; i++)
+        while(arr[j - 1] > ele && j >= 2)
         {
-            arr[i] = NULL;
-        }
-    }
-};
-
-class Trie
-{
-    Node *root;
-
-public:
-    /** Initialize your data structure here. */
-    Trie()
-    {
-        root = new Node();
-    }
-
-    /** Inserts a word into the trie. */
-    void insert(string &word)
-    {
-        Node *temp = root;
-
-        for (char c : word)
-        {
-            int index = c - 'a';
-            if (temp->arr[index] == NULL)
-                temp->arr[index] = new Node();
-            temp->cnt++;
-            temp = temp->arr[index];
+            arr[j] = arr[j - 1];
+            j--;
         }
 
-        temp->cnt++;
-        temp->flag = true;
+        arr[j] = ele;
     }
-
-    /** Returns if the word is in the trie. */
-    bool search(string &word)
-    {
-        Node *temp = root;
-
-        for (char c : word)
-        {
-            int index = c - 'a';
-            if (temp->arr[index] == NULL || temp->cnt == 0)
-                return false;
-            temp = temp->arr[index];
-        }
-
-        return temp->flag;
-    }
-
-    /** Returns if there is any word in the trie that starts with the given prefix. */
-    bool startsWith(string &prefix)
-    {
-        Node *temp = root;
-
-        for (char c : prefix)
-        {
-            int index = c - 'a';
-            if (temp->arr[index] == NULL || temp->cnt == 0)
-                return false;
-            temp = temp->arr[index];
-        }
-
-        return (temp->cnt > 0);
-    }
-
-    /** Returns if the word is in the trie. */
-    void del(string &s)
-    {
-        if (search(s) == false)
-            return;
-
-        Node *temp = root;
-
-        for (char c : s)
-        {
-            int index = c - 'a';
-            temp->cnt--;
-            temp = temp->arr[index];
-        }
-
-        temp->cnt--;
-        temp->flag = false;
-    }
-};
+}
 
 void solve()
 {
+    cin >> n;
+    REP(i,1,n)cin>>arr[i];   
+    insertionSort();
+    REP(i,1,n)cout<<arr[i]<<" ";
 }
 
 int main(int argc, char const *argv[])

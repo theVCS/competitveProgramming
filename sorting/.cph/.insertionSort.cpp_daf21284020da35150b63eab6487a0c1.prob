@@ -1,0 +1,1 @@
+{"name":"Local: insertionSort","url":"d:\\study material\\comp prog\\sorting\\insertionSort.cpp","tests":[{"id":1626875968652,"input":"10\n10 9 8 7 6 5 4 3 2 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\study material\\comp prog\\sorting\\insertionSort.cpp","group":"local","local":true}

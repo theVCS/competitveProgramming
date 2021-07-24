@@ -131,7 +131,7 @@ int direction(point pivot, point a, point b)
     return t;
 }
 
-#define maxN 1000001
+#define maxN 2001
 #define INF 1000000000
 #define mod 1000000007
 #define printd(x) cout << fixed << setprecision(10) << x
@@ -170,25 +170,50 @@ ll binExp(ll a, ll power, ll m = mod)
     return res;
 }
 
-int pie[maxN];
+struct house
+{
+    int x, y;
+    int h;
+};
+
+int n;
+house arr[maxN];
+
+bool cmp(house a, house b)
+{
+    return a.x < b.x;
+}
 
 void solve()
 {
-    string s;
+    ll s = 0;
+    cin >> n;
 
-    cin >> s;
-
-    REP(i, 1, s.size()-1)
+    REP(i, 1, n)
     {
-        int j = pie[i - 1];
-
-        while (j > 0 && s[i] != s[j])
-            j = pie[j - 1];
-        if (s[i] == s[j])
-            j++;
-
-        pie[i] = j;
+        cin >> arr[i].x >> arr[i].y >> arr[i].h;
+        int x = arr[i].x, y = arr[i].y;
+        arr[i].x = x - y;
+        arr[i].y = y + x;
+        s += arr[i].h;
     }
+    arr[n+1].x = INF;
+    sort(arr + 1, arr + 1 + n, cmp);
+
+    REP(i, 1, n)
+    {
+        arr[i].h += arr[i - 1].h;
+
+        if(arr[i].x==arr[i+1].x)continue;
+
+        if (2 * arr[i].h == s || arr[i - 1].h == s - arr[i].h)
+        {
+            cout << "YES" << endl;
+            return;
+        }
+    }
+
+    cout << "NO" << endl;
 }
 
 int main(int argc, char const *argv[])
@@ -205,7 +230,7 @@ int main(int argc, char const *argv[])
 
     int t = 1;
 
-    //cin >> t;
+    cin >> t;
 
     while (t--)
     {
